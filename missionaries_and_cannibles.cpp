@@ -16,6 +16,7 @@ class State {
     int value[3];
     ///will be used to store child states
     vector <State*> childStates;
+    
     /** This constructor can be used to intialize the state uisng an
      * integer array
      * @arg v arress of an integer array containing three elemnts.
@@ -26,6 +27,7 @@ class State {
             this->value[i] = v[i];
         }
     }
+
     /** This constructor can be used to intialize the state uisng an
      * integer array
      * @arg m number of misionaries
@@ -164,6 +166,9 @@ void generateTree(State* currentState) {
 
     for (auto& a: currentState->childStates) {
         generateTree(a);
+        //if the goal state is found, no need to search further
+            if(a->value[0] == 0 && a->value[0] == 0 && a->value[0] == 0)
+            break;
     }
 }
 
@@ -183,6 +188,7 @@ void printTree(State* node) {
         printTree(a);
     }
 }
+
 int main() {
     int initial[3] = {3,3,1};
     State* initialState = new State(initial);
