@@ -7,6 +7,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <stack>
+#include <algorithm>
 using namespace std;
 /**This class will be represnting each state of the state space.
  * */
@@ -53,6 +55,7 @@ class State {
     void printState() {
         cout << "(" << value[0] << "," << value[1] << "," << value[2] << ")";
     }
+
     /***remember you need to pass two objects not pointers
      * */
     bool operator==(State s) {
@@ -60,6 +63,16 @@ class State {
             return true;
         } else {
             return false;
+        }
+    }
+
+    /***remember you need to pass two objects not pointers
+     * */
+    bool operator!=(State s) {
+        if(this->value[0] == s.value[0] && this->value[1] == s.value[1] && this->value[2] == s.value[2]) {
+            return false;
+        } else {
+            return true;
         }
     }
     
@@ -189,11 +202,31 @@ void printTree(State* node) {
     }
 }
 
+void dfs(State* currentState, State* goalState, stack<State*, vector<State*>> * path) {
+    path->push(currentState);
+    if(*currentState != *goalState && !currentState->childStates.empty()) {
+        for (auto c: path->top()->childStates) {
+            dfs(c, goalState, path);
+        }
+    } else{
+        if(*currentState != *goalState){
+            path->pop();
+        } 
+    }
+}
+
 int main() {
-    int initial[3] = {3,3,1};
-    State* initialState = new State(initial);
-    alreadyDiscovered.push_back(initialState);
-    generateTree(initialState);
-    printTree(initialState);
+    int initial[3] = {3,3,1}; /// start state values
+    State* initialState = new State(initial); ///Start State
+    State* goalState = new State(0,0,0);
+    stack<State*, vector<State*>> dfsStack; /// this stack will be used by BFS search
+    alreadyDiscovered.push_back(initialState);  
+    generateTree(initialState); //generate the state space
+    dfs(initialState, goalState, &dfsStack); // perform dfs to find the optimal path
+    //print the optimal path
+    while(!dfsStack.empty()){
+        dfsStack.top()->printState(); cout << endl;
+        dfsStack.pop();
+    }
     return 0;
 }
