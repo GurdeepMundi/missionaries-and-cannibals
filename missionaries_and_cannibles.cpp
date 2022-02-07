@@ -202,6 +202,12 @@ void printTree(State* node) {
     }
 }
 
+/*** This algortithm searches for the optimal path in this tree structure.
+ * It uses the depth first search to get to the goal state
+ *  @param currentState current state in [MCB] form.
+ *  @param goalState goal state in [MCB] form.
+ *  @param path reference to the stack which you want to store the resulting path in.
+ **/ 
 void dfs(State* currentState, State* goalState, stack<State*, vector<State*>> * path) {
     path->push(currentState);
     if(*currentState != *goalState && !currentState->childStates.empty()) {
@@ -219,14 +225,22 @@ int main() {
     int initial[3] = {3,3,1}; /// start state values
     State* initialState = new State(initial); ///Start State
     State* goalState = new State(0,0,0);
-    stack<State*, vector<State*>> dfsStack; /// this stack will be used by BFS search
+    stack<State*, vector<State*>> dfsStack; /// this stack will be used by DFS search
     alreadyDiscovered.push_back(initialState);  
     generateTree(initialState); //generate the state space
     dfs(initialState, goalState, &dfsStack); // perform dfs to find the optimal path
-    //print the optimal path
+    stack<State*, vector<State*>> printStack; //temporary stack to format output
+    //print reverseing the stack for printing
     while(!dfsStack.empty()){
-        dfsStack.top()->printState(); cout << endl;
+        printStack.push(dfsStack.top());
         dfsStack.pop();
+    }
+    //output of the program
+    cout << "You need minimum " << printStack.size() << " steps to transfer missionaries and cannibles" << endl;
+    cout << "Here are the transition states that you need to go through: " << endl;
+    while(!printStack.empty()){
+        printStack.top()->printState(); cout << endl;
+        printStack.pop();
     }
     return 0;
 }
