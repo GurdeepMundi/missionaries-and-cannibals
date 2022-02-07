@@ -1,5 +1,6 @@
 ## Formulation
-we have 3 cannibals (c) and 3 missionaries(m) and a boat (b). we have to take them to the other side of the river transfering up to two people in the boat. We cannot have more cannibals than missionaries on either side of the river.
+we have 3 cannibals (c) and 3 missionaries(m) and a boat (b). we have to take them to the other side of the river transfering up 
+to two people in the boat. We cannot have more cannibals than missionaries on either side of the river.
 
 we will use an array [M, C, B] which will denote the number of missionaries, cannibals, and boats on the left side of the river. 
 
@@ -24,4 +25,5 @@ One cannibal and one missionary cross to either side: add (right to left) or sub
 yes it is a good idea to check for repeated states because otherwise, we would get into an infinite state space.
 
 ### Why do you think people have a hard time solving this puzzle, given that the statespace is so simple?
-As discussed previously, the repeated states could put us in an infinite loop. Also, even if the missionaries are safe on the left side, they could be attacked on the other side of the river. These might be the reasons why it is hard to solve by normal people.
+As discussed previously, the repeated states could put us in an infinite loop. Also, even if the missionaries are safe on the left side, 
+they could be attacked on the other side of the river. These might be the reasons why it is hard to solve by normal people.
