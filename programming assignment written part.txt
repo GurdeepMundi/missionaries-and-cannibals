@@ -1,10 +1,12 @@
-1. we have 3 cannibals (c) and 3 missionaries(m) and a boat (b). we have to take them to the other side of the river transfering up to two people in the boat. We cannot have more cannibals than missionaries on either side of the river.
+## Formulation
+we have 3 cannibals (c) and 3 missionaries(m) and a boat (b). we have to take them to the other side of the river transfering up to two people in the boat. We cannot have more cannibals than missionaries on either side of the river.
 
 we will use an array [M, C, B] which will denote the number of missionaries, cannibals, and boats on the left side of the river. 
 
 start state: [3,3,1]
 end state/ goal state: [0,0,0]
-
+b = 0: means boat is on the right side of the river.
+b = 1: means boat is on the left side of the river.
 depending on which side of the river the boat is, there are 5 out of 10 possible ways to modify the intermedidate states as follows:
 One cannibal or missionary cross from left to right: subtract (0,1,1) or (1,0,1)
 two cnnibals or missionaries cross from left to right: subtract (0,2,1) or (2,0,1)
@@ -13,7 +15,13 @@ Two cannibals or missionaries cross from right to left: add (2,0,1) or (0,2,1)
 One cannibal and one missionary cross to either side: add (right to left) or subtract(left to right) (1,1,1)
 
 
-
-algorithm:
+## Algorithm:
 1. generate all the possbile states and store them in a graph like data structure.
 2. use depth-first-search (or any other technique to search for the goal state) and show the path.
+
+
+### Is it a good idea to check for repeated states?
+yes it is a good idea to check for repeated states because otherwise, we would get into an infinite state space.
+
+### Why do you think people have a hard time solving this puzzle, given that the statespace is so simple?
+As discussed previously, the repeated states could put us in an infinite loop. Also, even if the missionaries are safe on the left side, they could be attacked on the other side of the river. These might be the reasons why it is hard to solve by normal people.
