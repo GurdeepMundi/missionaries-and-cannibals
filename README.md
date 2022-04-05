@@ -1,6 +1,6 @@
 # missionaries-and-cannibals
 A solution implemented using Depth-First Search (DFS).
-<hr/>
+<br>
 ### Compilation Instructions
 you can run this algorithm using a c++ compiler.
 _Instruction for compiling using g++ on command line_
