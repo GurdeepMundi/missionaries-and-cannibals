@@ -14,14 +14,15 @@ using namespace std;
  * */
 class State {
     public:
-    ///will store values in form of [M, C, B] whicih stands for missionaries, cannibals, and boats on the left side
+    ///will store values in form of [M, C, B] whicih stands for 
+    ///missionaries, cannibals, and boats on the left side
     int value[3];
     ///will be used to store child states
     vector <State*> childStates;
     
     /** This constructor can be used to intialize the state uisng an
      * integer array
-     * @arg v arress of an integer array containing three elemnts.
+     * @arg v adrress of an integer array containing three elemnts.
      */
     State(int* v) {
         //ctr
@@ -56,52 +57,59 @@ class State {
         cout << "(" << value[0] << "," << value[1] << "," << value[2] << ")";
     }
 
-    /***remember you need to pass two objects not pointers
+    /***Checks the equality between two states
      * */
     bool operator==(State s) {
-        if(this->value[0] == s.value[0] && this->value[1] == s.value[1] && this->value[2] == s.value[2]) {
+        if(this->value[0] == s.value[0] 
+            && this->value[1] == s.value[1] 
+            && this->value[2] == s.value[2]) {
             return true;
         } else {
             return false;
         }
     }
 
-    /***remember you need to pass two objects not pointers
+    /***Checks inequality between two states
      * */
     bool operator!=(State s) {
-        if(this->value[0] == s.value[0] && this->value[1] == s.value[1] && this->value[2] == s.value[2]) {
+        if(this->value[0] == s.value[0] 
+            && this->value[1] == s.value[1] 
+            && this->value[2] == s.value[2]) {
             return false;
         } else {
             return true;
         }
     }
     
-    /*** remember you nedd to use on object, not pointer
+    /*** Decrements all values in the state by 1
      * @arg a an integer array
      * */
-    bool operator-=(int* a) {
+    void operator-=(int* a) {
         for(int i = 0; i < 3; i++) {
             value[i] -= a[i];
         }
     }
 
-    /***remember you nedd to use on object, not pointer
+    /*** Increments all values in the state by 1
      * */
-    bool operator+=(int* a) {
+    void operator+=(int* a) {
         for(int i = 0; i < 3; i++) {
             value[i] += a[i];
         }
     }
-
 };
 
-/** checks if the given state will pose a cannible situation on either side of the river.
- *  @return true if canible situation
+/** Checks if the given state will pose a cannible situation on either side of
+ *  the river.
+ *  @return true if canible situation, false otherwise
  * */
 bool isCanibal(State* checkState) {
-    if((checkState->value[0] < checkState->value[1] && checkState->value[0] !=0) || 
-    checkState->value[0] == 2 && checkState->value[1] == 1 ||
-    checkState->value[0] == 2 && checkState->value[1] == 0)
+    if((checkState->value[0] < checkState->value[1] 
+        && checkState->value[0]!= 0) 
+        || checkState->value[0] == 2 
+        && checkState->value[1] == 1 
+        || checkState->value[0] == 2 
+        && checkState->value[1] == 0)
         return true;
     return false;
 }
@@ -126,11 +134,15 @@ vector<State*> stateGenerator(State* current) {
     if(current->value[2] == 1) {
         for(int i = 0; i < 5; i++) {
             tempState = new State(current->value[0] - ltr[i][0],
-            current->value[1] - ltr[i][1],
-            current->value[2] - ltr[i][2]);
-            if(tempState->value[0] < 0 || tempState->value[1] < 0 || tempState->value[2] < 0) 
+                                current->value[1] - ltr[i][1],
+                                current->value[2] - ltr[i][2]);
+            if(tempState->value[0] < 0
+                || tempState->value[1] < 0
+                || tempState->value[2] < 0)
             continue;
-            if(tempState->value[0] > 3 || tempState->value[1] > 3 || tempState->value[2] > 1)
+            if(tempState->value[0] > 3 
+                || tempState->value[1] > 3 
+                || tempState->value[2] > 1)
             continue;
             if(isCanibal(tempState))
             continue;
@@ -140,11 +152,15 @@ vector<State*> stateGenerator(State* current) {
         //if boat is on right bank
         for(int i = 0; i < 5; i++) {
             tempState = new State(current->value[0] + ltr[i][0],
-            current->value[1] + ltr[i][1],
-            current->value[2] + ltr[i][2]);
-            if(tempState->value[0] < 0 || tempState->value[1] < 0 || tempState->value[2] < 0)
+                                current->value[1] + ltr[i][1],
+                                current->value[2] + ltr[i][2]);
+            if(tempState->value[0] < 0 
+                || tempState->value[1] < 0 
+                || tempState->value[2] < 0)
             continue;
-            if(tempState->value[0] > 3 || tempState->value[1] > 3 || tempState->value[2] > 1)
+            if(tempState->value[0] > 3 
+                || tempState->value[1] > 3 
+                || tempState->value[2] > 1)
             continue;
             if(isCanibal(tempState))
             continue;
@@ -155,7 +171,7 @@ vector<State*> stateGenerator(State* current) {
 }
 
 vector<State*> alreadyDiscovered;// used to store already discovered nodes
-/** This function will be used to generate whole tree or we can say state space in this case.
+/** This function will be used to generate whole state space
  * */
 void generateTree(State* currentState) {
     vector<State*> derivedStates = stateGenerator(currentState);
@@ -180,12 +196,12 @@ void generateTree(State* currentState) {
     for (auto& a: currentState->childStates) {
         generateTree(a);
         //if the goal state is found, no need to search further
-            if(a->value[0] == 0 && a->value[0] == 0 && a->value[0] == 0)
-            break;
+        if(a->value[0] == 0 && a->value[0] == 0 && a->value[0] == 0)
+        break;
     }
 }
 
-/** this function can be used to print a tree or subtree
+/** Print a tree or a subtree
  * @param node the initial or substate from where you want to print
  * */
 void printTree(State* node) {
@@ -203,12 +219,13 @@ void printTree(State* node) {
 }
 
 /*** This algortithm searches for the optimal path in this tree structure.
- * It uses the depth first search to get to the goal state
+ *  It uses the depth first search to get to the goal state
  *  @param currentState current state in [MCB] form.
  *  @param goalState goal state in [MCB] form.
- *  @param path reference to the stack which you want to store the resulting path in.
+ *  @param path vector of states where states are stored in progressive way.
  **/ 
-void dfs(State* currentState, State* goalState, stack<State*, vector<State*>> * path) {
+void dfs(State* currentState, State* goalState
+    , stack<State*, vector<State*>> * path) {
     path->push(currentState);
     if(*currentState != *goalState && !currentState->childStates.empty()) {
         for (auto c: path->top()->childStates) {
@@ -222,13 +239,12 @@ void dfs(State* currentState, State* goalState, stack<State*, vector<State*>> * 
 }
 
 int main() {
-    int initial[3] = {3,3,1}; /// start state values
-    State* initialState = new State(initial); ///Start State
-    State* goalState = new State(0,0,0);
-    stack<State*, vector<State*>> dfsStack; /// this stack will be used by DFS search
+    State* initialState = new State(3, 3, 1); ///Start State
+    State* goalState = new State(0, 0, 0);
+    stack<State*, vector<State*>> dfsStack;
     alreadyDiscovered.push_back(initialState);  
-    generateTree(initialState); //generate the state space
-    dfs(initialState, goalState, &dfsStack); // perform dfs to find the optimal path
+    generateTree(initialState);
+    dfs(initialState, goalState, &dfsStack);
     stack<State*, vector<State*>> printStack; //temporary stack to format output
     //print reverseing the stack for printing
     while(!dfsStack.empty()){
@@ -236,8 +252,11 @@ int main() {
         dfsStack.pop();
     }
     //output of the program
-    cout << "You need minimum " << printStack.size() << " steps to transfer missionaries and cannibles" << endl;
-    cout << "Here are the transition states that you need to go through: " << endl;
+    cout << "You need minimum " 
+        << printStack.size() 
+        << " steps to transfer missionaries and cannibles" << endl;
+    cout << "Here are the transition states that you need to go through: " 
+        << endl;
     while(!printStack.empty()){
         printStack.top()->printState(); cout << endl;
         printStack.pop();
